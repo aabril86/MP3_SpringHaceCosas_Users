@@ -1,10 +1,8 @@
 package com.example.demo;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -21,17 +19,36 @@ public class UserResource {
     }
 
     @GetMapping
-    private List<User> users() {
+    private List<UserDto> users() {
         return userController.readAll();
     }
 
-//    @GetMapping("/{id}")
-//    private User user(@PathVariable String id) {
-//        return userController.getUserById(id);
-//    }
-//
-//    @GetMapping("/{id}/email}")
-//    private Map<String,String> email(@PathVariable String id) {
-//        return Collections.singletonMap("email",userController.getUserById(id).getEmail());
-//    }
+
+
+    @GetMapping("/{id}")
+    private UserDto user(@PathVariable Integer id) {
+        return userController.getUserById(id);
+    }
+
+    //ESTO ES LO DEL VIDEO
+    @GetMapping("/{id}/email}")
+    private Map<String,String> email(@PathVariable Integer id) {
+        return Collections.singletonMap("email",userController.getUserById(id).getEmail());
+    }
+
+    @PostMapping
+    private UserDto newUser(@RequestBody UserDto userDto){
+        return userController.addUser(userDto);
+    }
+
+    @DeleteMapping("/{id}")
+    private void deleteUser(@PathVariable Integer id){
+        userController.removeUser(id);
+    }
+
+    @PutMapping("/{id}")
+    private UserDto replaceUser(@RequestBody UserDto userDto, @PathVariable Integer id){
+        return userController.updateUser(userDto, id);
+    }
+
 }
